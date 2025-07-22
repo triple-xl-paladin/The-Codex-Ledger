@@ -1,0 +1,584 @@
+@startuml
+set namespaceSeparator ::
+
+class "daggerheart::widgets::feature_grid_tile.dart::FeatureGridTile" {
+  +String title
+  +IconData icon
+  +void Function() onTap
+  +Widget build()
+}
+
+"daggerheart::widgets::feature_grid_tile.dart::FeatureGridTile" o-- "flutter::src::widgets::icon_data.dart::IconData"
+"daggerheart::widgets::feature_grid_tile.dart::FeatureGridTile" o-- "dart::ui::void Function()"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::feature_grid_tile.dart::FeatureGridTile"
+
+class "daggerheart::widgets::sidebar_menu.dart::SidebarMenu" {
+  +void Function(Widget) onSelectContent
+  +bool isDarkMode
+  +void Function(bool) onThemeChanged
+  +List<Map<String, dynamic>> features
+  +Widget build()
+}
+
+"daggerheart::widgets::sidebar_menu.dart::SidebarMenu" o-- "null::void Function(Widget)"
+"daggerheart::widgets::sidebar_menu.dart::SidebarMenu" o-- "null::void Function(bool)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::sidebar_menu.dart::SidebarMenu"
+
+class "daggerheart::widgets::character::ancestry_picker_dialog.dart::AncestryPickerDialog" {
+  +List<CharacterAncestry> availableAncestry
+  +CharacterAncestry? selectedAncestry
+  +Widget build()
+}
+
+"daggerheart::widgets::character::ancestry_picker_dialog.dart::AncestryPickerDialog" o-- "daggerheart::models::character_ancestry.dart::CharacterAncestry"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::character::ancestry_picker_dialog.dart::AncestryPickerDialog"
+
+class "daggerheart::widgets::character::character_class_section.dart::CharacterClassSection" {
+  +Character character
+  +dynamic Function(Character) onCharacterUpdated
+  +State<CharacterClassSection> createState()
+}
+
+"daggerheart::widgets::character::character_class_section.dart::CharacterClassSection" o-- "daggerheart::models::character.dart::Character"
+"daggerheart::widgets::character::character_class_section.dart::CharacterClassSection" o-- "null::dynamic Function(Character)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::widgets::character::character_class_section.dart::CharacterClassSection"
+
+class "daggerheart::widgets::character::character_class_section.dart::_CharacterClassSectionState" {
+  -int _minLevel
+  -int _maxLevel
+  -Character _character
+  +void initState()
+  +void didUpdateWidget()
+  -void _selectClass()
+  -void _selectAncestry()
+  -void _selectHeritage()
+  -Widget _buildClassSelector()
+  -Widget _buildSubclassSelector()
+  -Widget _buildLevelSelector()
+  -dynamic _showStatAdjustDialog()
+  -Widget _buildAdjustableStat()
+  -Widget _buildAncestrySelector()
+  -Widget _buildHeritageSelector()
+  +Widget build()
+}
+
+"daggerheart::widgets::character::character_class_section.dart::_CharacterClassSectionState" o-- "daggerheart::models::character.dart::Character"
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::widgets::character::character_class_section.dart::_CharacterClassSectionState"
+
+class "daggerheart::widgets::character::heritage_picker_dialog.dart::HeritagePickerDialog" {
+  +List<CharacterHeritage> availableHeritage
+  +CharacterHeritage? selectedHeritage
+  +Widget build()
+}
+
+"daggerheart::widgets::character::heritage_picker_dialog.dart::HeritagePickerDialog" o-- "daggerheart::models::character_heritage.dart::CharacterHeritage"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::character::heritage_picker_dialog.dart::HeritagePickerDialog"
+
+class "daggerheart::widgets::character::subclass_picker_dialog.dart::SubclassPickerDialog" {
+  +CharacterClass selectedClass
+  +List<CharacterSubclass> subclassDetails
+  +Widget build()
+}
+
+"daggerheart::widgets::character::subclass_picker_dialog.dart::SubclassPickerDialog" o-- "daggerheart::models::character_class.dart::CharacterClass"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::character::subclass_picker_dialog.dart::SubclassPickerDialog"
+
+class "daggerheart::widgets::character::class_picker_dialog.dart::ClassPickerDialog" {
+  +List<CharacterClass> availableClasses
+  +CharacterClass? selectedClass
+  +Widget build()
+}
+
+"daggerheart::widgets::character::class_picker_dialog.dart::ClassPickerDialog" o-- "daggerheart::models::character_class.dart::CharacterClass"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::character::class_picker_dialog.dart::ClassPickerDialog"
+
+class "daggerheart::widgets::character::domain_card_selection_dialog.dart::DomainCardSelectionDialog" {
+  +List<CardModel> availableCards
+  +List<CardModel> initiallySelected
+  +State<DomainCardSelectionDialog> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::widgets::character::domain_card_selection_dialog.dart::DomainCardSelectionDialog"
+
+class "daggerheart::widgets::character::domain_card_selection_dialog.dart::_DomainCardSelectionDialogState" {
+  -Set<CardModel> _selectedCards
+  +void initState()
+  -void _toggleCard()
+  -bool _isCardSelected()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::widgets::character::domain_card_selection_dialog.dart::_DomainCardSelectionDialogState"
+
+class "daggerheart::widgets::character::character_class_feature_section.dart::CharacterClassFeatureSection" {
+  +Character character
+  +Widget buildHopeFeature()
+  +Widget buildClassFeatures()
+  +Widget build()
+}
+
+"daggerheart::widgets::character::character_class_feature_section.dart::CharacterClassFeatureSection" o-- "daggerheart::models::character.dart::Character"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::character::character_class_feature_section.dart::CharacterClassFeatureSection"
+
+class "daggerheart::widgets::app_scaffold.dart::AppScaffold" {
+  +Widget content
+  +String title
+  +void Function(Widget) onSelectContent
+  +bool isDarkMode
+  +void Function(bool) onThemeChanged
+  +List<Map<String, dynamic>> features
+  +Widget build()
+}
+
+"daggerheart::widgets::app_scaffold.dart::AppScaffold" o-- "flutter::src::widgets::framework.dart::Widget"
+"daggerheart::widgets::app_scaffold.dart::AppScaffold" o-- "flutter::src::foundation::basic_types.dart::void Function(Widget)"
+"daggerheart::widgets::app_scaffold.dart::AppScaffold" o-- "flutter::src::foundation::basic_types.dart::void Function(bool)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::widgets::app_scaffold.dart::AppScaffold"
+
+class "daggerheart::main.dart::MyApp" {
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::main.dart::MyApp"
+
+class "daggerheart::utils::scroll_behaviour.dart::AlwaysVisibleScrollBehavior" {
+  +Widget buildScrollbar()
+}
+
+"flutter::src::material::app.dart::MaterialScrollBehavior" <|-- "daggerheart::utils::scroll_behaviour.dart::AlwaysVisibleScrollBehavior"
+
+class "daggerheart::services::database_helper.dart::DatabaseHelper" {
+  {static} +DatabaseHelper instance
+  {static} -Database? _database
+  +dynamic database
+  -dynamic _initDB()
+  -dynamic _createDB()
+  -Map<Attribute, int> _extractAttributes()
+  -String _capitalize()
+  +dynamic insertCharacter()
+  +dynamic getCharacters()
+  +dynamic updateCharacter()
+  +dynamic deleteCharacter()
+  +dynamic resetDatabase()
+  +dynamic getCharacterById()
+}
+
+"daggerheart::services::database_helper.dart::DatabaseHelper" o-- "daggerheart::services::database_helper.dart::DatabaseHelper"
+"daggerheart::services::database_helper.dart::DatabaseHelper" o-- "sqflite_common::sqlite_api.dart::Database"
+
+class "daggerheart::models::card.dart::CardModel" {
+  +int level
+  +String domain
+  +String name
+  +String type
+  +int recallCost
+  +String feature
+  +String image
+  +int id
+  +int tier
+  +int hashCode
+  +Map<String, dynamic> toJson()
+  +bool ==()
+}
+
+class "daggerheart::models::character_ancestry.dart::CharacterAncestry" {
+  +String? id
+  +String name
+  +String description
+  +String? image
+}
+
+class "daggerheart::models::armour.dart::ArmourModel" {
+  +String name
+  +int baseThreshold1
+  +int baseThreshold2
+  +int baseScore
+  +String feature
+  +int tier
+  +String? image
+}
+
+class "daggerheart::models::items.dart::ItemsModel" {
+  +String itemName
+  +String? itemFeature
+  +String? itemType
+  +int itemId
+  +String? itemImage
+}
+
+class "daggerheart::models::character_subclass.dart::CharacterSubclass" {
+  +String name
+  +String description
+}
+
+class "daggerheart::models::character_heritage.dart::CharacterHeritage" {
+  +String? id
+  +String name
+  +String description
+  +String? image
+}
+
+class "daggerheart::models::character_class.dart::CharacterClass" {
+  +String id
+  +String name
+  +String description
+  +int evasion
+  +int hitPoints
+  +List<String> domainClasses
+  +List<String> classItems
+  +String hopeFeature
+  +List<String> classFeatures
+  +List<String> availableSubClasses
+}
+
+class "daggerheart::models::character.dart::Character" {
+  +String name
+  +List<CardModel> deck
+  +int? characterId
+  +int? characterLevel
+  +int? characterEvasion
+  +int? characterHitpoints
+  +String? characterClass
+  +String? characterSubclass
+  +String? characterAncestry
+  +String? characterHeritage
+  +Map<Attribute, int>? attributes
+  +Character copyWith()
+  +void addCard()
+  +void removeCard()
+  +Character withAttributeDefaults()
+  +Map<String, dynamic> toJson()
+}
+
+class "daggerheart::models::character.dart::Attribute" {
+  +int index
+  {static} +List<Attribute> values
+  {static} +Attribute agility
+  {static} +Attribute strength
+  {static} +Attribute finesse
+  {static} +Attribute instinct
+  {static} +Attribute presence
+  {static} +Attribute knowledge
+}
+
+"daggerheart::models::character.dart::Attribute" o-- "daggerheart::models::character.dart::Attribute"
+"dart::core::Enum" <|-- "daggerheart::models::character.dart::Attribute"
+
+class "daggerheart::models::weapon.dart::WeaponModel" {
+  +int id
+  +String name
+  +String feature
+  +String type
+  +int tier
+  +String? image
+}
+
+class "daggerheart::providers::app_data_provider.dart::AppDataProvider" {
+  -List<CharacterClass> _classes
+  -List<CharacterAncestry> _ancestries
+  -List<CharacterSubclass> _subclasses
+  -List<CharacterHeritage> _heritages
+  -List<CardModel> _cards
+  -List<ArmourModel> _armours
+  -List<WeaponModel> _weapons
+  -List<ItemsModel> _items
+  -bool _isLoading
+  -String? _error
+  +List<CharacterClass> classes
+  +List<CharacterAncestry> ancestries
+  +List<CharacterSubclass> subclasses
+  +List<CharacterHeritage> heritages
+  +List<CardModel> cards
+  +List<ArmourModel> armours
+  +List<WeaponModel> weapons
+  +List<ItemsModel> items
+  +bool isLoading
+  +String? error
+  +dynamic loadAllData()
+}
+
+"flutter::src::foundation::change_notifier.dart::ChangeNotifier" <|-- "daggerheart::providers::app_data_provider.dart::AppDataProvider"
+
+class "daggerheart::screens::domain_cards_list_screen.dart::DomainCardsListScreen" {
+  +State<DomainCardsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::domain_cards_list_screen.dart::DomainCardsListScreen"
+
+class "daggerheart::screens::domain_cards_list_screen.dart::_DomainCardsListScreenState" {
+  -String? _selectedDomain
+  -List<int> _tiers
+  -String _searchQuery
+  -int _selectedTier
+  -int _selectedLevel
+  +void initState()
+  -List<CardModel> _applyFilters()
+  -Widget _buildStringDropdown()
+  -Widget _buildIntDropdown()
+  -Widget _buildCardTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::domain_cards_list_screen.dart::_DomainCardsListScreenState"
+
+class "daggerheart::screens::ancestry_cards_list_screen.dart::AncestryCardsListScreen" {
+  +State<AncestryCardsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::ancestry_cards_list_screen.dart::AncestryCardsListScreen"
+
+class "daggerheart::screens::ancestry_cards_list_screen.dart::_AncestryCardsListScreenState" {
+  -String _searchQuery
+  +void initState()
+  -List<CharacterAncestry> _filteredCards()
+  -Widget _buildCardTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::ancestry_cards_list_screen.dart::_AncestryCardsListScreenState"
+
+class "daggerheart::screens::armour_list_screen.dart::ArmourListScreen" {
+  +State<ArmourListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::armour_list_screen.dart::ArmourListScreen"
+
+class "daggerheart::screens::armour_list_screen.dart::_ArmourListScreenState" {
+  -List<int> _tiers
+  -String _searchQuery
+  -int _selectedTier
+  -List<ArmourModel> _filterArmour()
+  -Widget _buildFilterDropdown()
+  -Widget _buildArmourTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::armour_list_screen.dart::_ArmourListScreenState"
+
+class "daggerheart::screens::settings_screen.dart::SettingsScreen" {
+  +bool isDarkMode
+  +void Function(bool) onThemeChanged
+  +State<SettingsScreen> createState()
+}
+
+"daggerheart::screens::settings_screen.dart::SettingsScreen" o-- "flutter::src::foundation::basic_types.dart::void Function(bool)"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::settings_screen.dart::SettingsScreen"
+
+class "daggerheart::screens::settings_screen.dart::_SettingsScreenState" {
+  +String cglCopyright
+  +String cglAttribution
+  +String cglModification
+  +String cglTrademark
+  +String gplNotice
+  +String cglCardCreatorAttribution
+  -dynamic _launchUrl()
+  -void _viewLogs()
+  -void _importData()
+  -void _exportData()
+  -void _showResetDialog()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::settings_screen.dart::_SettingsScreenState"
+
+class "daggerheart::screens::card_category_screen.dart::CardCategoryScreenContent" {
+  +void Function(Widget) onCategorySelected
+  +Widget build()
+}
+
+"daggerheart::screens::card_category_screen.dart::CardCategoryScreenContent" o-- "null::void Function(Widget)"
+"flutter::src::widgets::framework.dart::StatelessWidget" <|-- "daggerheart::screens::card_category_screen.dart::CardCategoryScreenContent"
+
+class "daggerheart::screens::weapon_list_screen.dart::WeaponListScreen" {
+  +State<WeaponListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::weapon_list_screen.dart::WeaponListScreen"
+
+class "daggerheart::screens::weapon_list_screen.dart::_WeaponListScreenState" {
+  -List<int> _tiers
+  -String _searchQuery
+  -int _selectedTier
+  -List<WeaponModel> _filterWeapons()
+  -Widget _buildFilterDropdown()
+  -Widget _buildWeaponTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::weapon_list_screen.dart::_WeaponListScreenState"
+
+class "daggerheart::screens::character_sheet_screen.dart::CharacterSheetScreen" {
+  +int characterId
+  +State<CharacterSheetScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::character_sheet_screen.dart::CharacterSheetScreen"
+
+class "daggerheart::screens::character_sheet_screen.dart::_CharacterSheetScreenState" {
+  -Character? _character
+  -bool _isLoading
+  +void initState()
+  -dynamic _loadCharacter()
+  -void _editAttribute()
+  -Widget _buildAttributeTable()
+  -void _handleDeckSelection()
+  -Widget _buildDeckList()
+  -void _saveCharacter()
+  +Widget build()
+}
+
+"daggerheart::screens::character_sheet_screen.dart::_CharacterSheetScreenState" o-- "daggerheart::models::character.dart::Character"
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::character_sheet_screen.dart::_CharacterSheetScreenState"
+
+class "daggerheart::screens::debug_database_screen.dart::DebugDatabaseScreen" {
+  +State<DebugDatabaseScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::debug_database_screen.dart::DebugDatabaseScreen"
+
+class "daggerheart::screens::debug_database_screen.dart::_DebugDatabaseScreenState" {
+  -Map<String, List<Map<String, dynamic>>> _tablesData
+  -bool _loading
+  +void initState()
+  -dynamic _loadAllTables()
+  -Widget _buildTableView()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::debug_database_screen.dart::_DebugDatabaseScreenState"
+
+class "daggerheart::screens::character_list_screen.dart::CharacterListScreen" {
+  +State<CharacterListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::character_list_screen.dart::CharacterListScreen"
+
+class "daggerheart::screens::character_list_screen.dart::_CharacterListScreenState" {
+  +List<Character> characters
+  +void initState()
+  -dynamic _loadCharacters()
+  -void _deleteCharacter()
+  -void _showCreateCharacterDialog()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::character_list_screen.dart::_CharacterListScreenState"
+
+class "daggerheart::screens::home_screen.dart::HomeScreen" {
+  +State<HomeScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::home_screen.dart::HomeScreen"
+
+class "daggerheart::screens::home_screen.dart::_HomeScreenState" {
+  -Widget _selectedContent
+  -bool _isDarkMode
+  +List<Map<String, dynamic>> features
+  -void _setContent()
+  -void _handleThemeChanged()
+  +void initState()
+  +Widget build()
+}
+
+"daggerheart::screens::home_screen.dart::_HomeScreenState" o-- "flutter::src::widgets::framework.dart::Widget"
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::home_screen.dart::_HomeScreenState"
+
+class "daggerheart::screens::debug_test_screen.dart::DebugTestScreen" {
+  +State<DebugTestScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::debug_test_screen.dart::DebugTestScreen"
+
+class "daggerheart::screens::debug_test_screen.dart::_DebugTestScreenState" {
+  +void initState()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::debug_test_screen.dart::_DebugTestScreenState"
+
+class "daggerheart::screens::items_list_screen.dart::ItemsListScreen" {
+  +State<ItemsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::items_list_screen.dart::ItemsListScreen"
+
+class "daggerheart::screens::items_list_screen.dart::_ItemsListScreenState" {
+  -String _searchQuery
+  +void initState()
+  -List<ItemsModel> _filteredItems()
+  -Widget _buildCardTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::items_list_screen.dart::_ItemsListScreenState"
+
+class "daggerheart::screens::character_deck_screen.dart::CharacterDeckScreen" {
+  +Character character
+  +State<CharacterDeckScreen> createState()
+}
+
+"daggerheart::screens::character_deck_screen.dart::CharacterDeckScreen" o-- "daggerheart::models::character.dart::Character"
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::character_deck_screen.dart::CharacterDeckScreen"
+
+class "daggerheart::screens::character_deck_screen.dart::_CharacterDeckScreenState" {
+  -Character _character
+  +void initState()
+  -void _addCardFromDomainList()
+  -void _removeCard()
+  -dynamic _saveDeck()
+  +Widget build()
+}
+
+"daggerheart::screens::character_deck_screen.dart::_CharacterDeckScreenState" o-- "daggerheart::models::character.dart::Character"
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::character_deck_screen.dart::_CharacterDeckScreenState"
+
+class "daggerheart::screens::subclasses_cards_list_screen.dart::SubclassCardsListScreen" {
+  +State<SubclassCardsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::subclasses_cards_list_screen.dart::SubclassCardsListScreen"
+
+class "daggerheart::screens::subclasses_cards_list_screen.dart::_SubclassCardsListScreenState" {
+  -List<CardModel> _filteredCards
+  -String _searchQuery
+  +String? currentSubclass
+  -void _applyFilters()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::subclasses_cards_list_screen.dart::_SubclassCardsListScreenState"
+
+class "daggerheart::screens::heritage_cards_list_screen.dart::HeritageCardsListScreen" {
+  +State<HeritageCardsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::heritage_cards_list_screen.dart::HeritageCardsListScreen"
+
+class "daggerheart::screens::heritage_cards_list_screen.dart::_HeritageCardsListScreenState" {
+  -String _searchQuery
+  +void initState()
+  -List<CharacterHeritage> _filteredCards()
+  -Widget _buildCardTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::heritage_cards_list_screen.dart::_HeritageCardsListScreenState"
+
+class "daggerheart::screens::communities_cards_list_screen.dart::CommunitiesCardsListScreen" {
+  +State<CommunitiesCardsListScreen> createState()
+}
+
+"flutter::src::widgets::framework.dart::StatefulWidget" <|-- "daggerheart::screens::communities_cards_list_screen.dart::CommunitiesCardsListScreen"
+
+class "daggerheart::screens::communities_cards_list_screen.dart::_CommunitiesCardsListScreenState" {
+  -String _searchQuery
+  +void initState()
+  -List<CharacterHeritage> _filteredCards()
+  -Widget _buildCardTile()
+  +Widget build()
+}
+
+"flutter::src::widgets::framework.dart::State" <|-- "daggerheart::screens::communities_cards_list_screen.dart::_CommunitiesCardsListScreenState"
+
+
+@enduml

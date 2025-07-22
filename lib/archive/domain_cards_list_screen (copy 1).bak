@@ -1,0 +1,12 @@
+import 'package:flutter/material.dart';
+
+class DomainCardsListScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // You can expand this with filtering and search functionality
+    return Scaffold(
+      appBar: AppBar(title: Text('Domain Cards')),
+      body: Center(child: Text('Domain cards list will appear here.')),
+    );
+  }
+}
