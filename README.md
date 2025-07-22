@@ -31,6 +31,12 @@ The app is in active development and currently has the following limitations:
 
 ---
 
+## Known Issues
+
+- With the lack of proper data, the search and filter functions do not work.
+
+---
+
 ## Roadmap
 - Support for multi-classing
 - Implement support for advancement

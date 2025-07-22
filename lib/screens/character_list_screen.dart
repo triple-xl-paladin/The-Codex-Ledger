@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../models/character.dart';
 import '../services/database_helper.dart';
 import '../services/logging_service.dart';
-//import 'character_deck_screen.dart'; // (we’ll create this next)
 
 class CharacterListScreen extends StatefulWidget {
   const CharacterListScreen({super.key});
@@ -27,7 +26,7 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
       setState(() {
         characters = chars;
       });
-      LoggingService().info('${DateTime.now()}: Number of characters loaded: £{chars.length}');
+      LoggingService().info('${DateTime.now()}: Number of characters loaded: ${chars.length}');
     } catch (e, stack) {
       LoggingService().severe('Error loading character: $e\n$stack');
     }

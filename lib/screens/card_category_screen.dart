@@ -31,7 +31,6 @@ class CardCategoryScreenContent extends StatelessWidget {
       {
         'title': 'Sub-Class Cards',
         'icon': Icon(Icons.assignment_ind, size: 40, color: Theme.of(context).iconTheme.color),
-        // TODO
         'content': SubclassCardsListScreen(),
       },
     ];

@@ -1,14 +1,17 @@
 [
   {
     "name": "Sub class 1",
-    "feature": "Sub class description and features"
+    "feature": "Sub class description and features",
+    "image": "placeholder.png"
   },
   {
     "name": "Sub class 2",
-    "feature": "Sub class description and features"
+    "feature": "Sub class description and features",
+    "image": "placeholder.png"
   },
   {
     "name": "Sub class 3",
-    "feature": "Sub class description and features"
+    "feature": "Sub class description and features",
+    "image": "placeholder.png"
   }
 ]
