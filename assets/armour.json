@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Armour name 1",
+    "base_threshold1": 10,
+    "base_threshold2": 20,
+    "base_score": 5,
+    "feature": "Other features or description goes here",
+    "tier": 1,
+    "id": 1
+  },
+  {
+    "name": "Armour name 2",
+    "base_threshold1": 13,
+    "base_threshold2": 31,
+    "base_score": 6,
+    "feature": "Other features or description goes here",
+    "tier": 2,
+    "id": 2
+  },
+  {
+    "name": "Armour name 3",
+    "base_threshold1": 20,
+    "base_threshold2": 45,
+    "base_score": 8,
+    "feature": "Other features or description goes here",
+    "tier": 3,
+    "id": 3
+  }
+]

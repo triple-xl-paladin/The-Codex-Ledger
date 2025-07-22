@@ -1,0 +1,37 @@
+[
+  {
+    "name": "Domain card 1",
+    "level": 1,
+    "domain": "Domain name here 1",
+    "type": "Type of card",
+    "recallCost": 1,
+    "feature": "Card description here,",
+    "image": "filename.png",
+    "id": 1,
+    "tier": 1
+  },
+  {
+    "name": "Domain card 2",
+    "name": "ARCANA-TOUCHED",
+    "level": 2,
+    "domain": "Domain name here 1",
+    "type": "Type of card",
+    "recallCost": 2,
+    "feature": "Card description here,",
+    "image": "filename.png",
+    "id": 2,
+    "tier": 2
+  },
+  {
+    "name": "Domain card 3",
+    "name": "ARCANE REFLECTION",
+    "level": 3,
+    "domain": "Domain name here 1",
+    "type": "Type of card",
+    "recallCost": 1,
+    "feature": "Card description here,",
+    "image": "filename.png",
+    "id": 3,
+    "tier": 3
+  }
+]

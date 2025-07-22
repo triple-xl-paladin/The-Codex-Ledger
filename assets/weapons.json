@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Weapon name 1",
+    "feature": "Weapon feature",
+    "type": "Weapon type",
+    "tier": 1
+  },
+  {
+    "id": 2,
+    "name": "Weapon name 2",
+    "feature": "Weapon feature",
+    "type": "Weapon type",
+    "tier": 2
+  },
+  {
+    "id": 3,
+    "name": "Weapon name 3",
+    "feature": "Weapon feature",
+    "type": "Weapon type",
+    "tier": 3
+  }
+]

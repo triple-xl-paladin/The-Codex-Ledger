@@ -1,0 +1,39 @@
+[
+  {
+    "id": "class1",
+    "name": "Class name 1",
+    "description": "Class description",
+    "evasion": 10,
+    "hitPoints": 5,
+    "domainClasses": ["Domain name 1", "Domain name 2"],
+    "classItems": ["Item 1", "Item 2"],
+    "hopeFeature": "Hope feature description",
+    "classFeatures": ["Class feature description"],
+    "availableSubClasses": ["Sub class 1", "Sub class 2"]
+  },
+  {
+    "id": "class2",
+    "name": "Class name 2",
+    "description": "Class description",
+    "evasion": 10,
+    "hitPoints": 5,
+    "domainClasses": ["Domain name 1", "Domain name 2"],
+    "classItems": ["Item 1", "Item 2"],
+    "hopeFeature": "Hope feature description",
+    "classFeatures": ["Class feature description"],
+    "availableSubClasses": ["Sub class 1", "Sub class 2"]
+  },
+  {
+    "id": "class2",
+    "name": "Class name 3",
+    "description": "Class description",
+    "evasion": 10,
+    "hitPoints": 5,
+    "domainClasses": ["Domain name 1", "Domain name 2"],
+    "classItems": ["Item 1", "Item 2"],
+    "hopeFeature": "Hope feature description",
+    "classFeatures": ["Class feature description"],
+    "availableSubClasses": ["Sub class 1", "Sub class 2"]
+  }
+]
+

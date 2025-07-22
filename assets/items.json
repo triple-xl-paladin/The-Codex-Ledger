@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Item name 1",
+    "feature": "Item description",
+    "type": "Item type",
+    "id": 1,
+    "image": "placeholder.png"
+  },
+  {
+    "name": "Item name 2",
+    "feature": "Item description",
+    "type": "Item type",
+    "id": 2,
+    "image": "placeholder.png"
+  },
+  {
+    "name": "Item name 3",
+    "feature": "Item description",
+    "type": "Item type",
+    "id": 3,
+    "image": "placeholder.png"
+  }
+]
