@@ -62,7 +62,7 @@ class LoggingService {
     }
 
     //final directory = await getApplicationDocumentsDirectory(); // Or use a specific directory if desired
-    final logFile = File('${directory.path}/daggerheart.log');
+    final logFile = File('${directory.path}/codex-ledger.log');
 
     if (!await logFile.exists()) {
       await logFile.create(recursive: true);

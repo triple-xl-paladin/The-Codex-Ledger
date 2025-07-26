@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:daggerheart/utils/console_attach.dart';
 import 'package:daggerheart/providers/theme_provider.dart';
 import 'package:daggerheart/services/theme_loader_service.dart';
 import 'package:daggerheart/theme/app_themes.dart';
@@ -13,20 +15,34 @@ import 'package:daggerheart/utils/scroll_behaviour.dart';
 import 'package:logging/logging.dart';
 import 'package:daggerheart/services/logging_service.dart';
 
-void main() async {
+void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  LoggingService().setup(level: Level.ALL);
-  final logger = LoggingService().getLogger('Main');
-  logger.info('App starting');
+  // Check for --debug flag. Works in windoze only
+  if (Platform.isWindows && args.contains('--debug')) {
+    attachConsole();
+  }
+
+  try {
+    LoggingService().setup(level: Level.ALL);
+    final logger = LoggingService().getLogger('Main');
+    logger.info('App starting');
+  } catch (e,stack) {
+    print('Logging service failed to start: $e/$stack');
+  }
 
   // For desktop platforms, use sqflite_common_ffi
   if (!kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.windows ||
           defaultTargetPlatform == TargetPlatform.linux ||
           defaultTargetPlatform == TargetPlatform.macOS)) {
-    sqfliteFfiInit(); // Initializes FFI
-    databaseFactory = databaseFactoryFfi; // Sets the global database factory
+    try {
+      sqfliteFfiInit(); // Initializes FFI
+      databaseFactory = databaseFactoryFfi; // Sets the global database factory
+    } catch (e, stack) {
+      LoggingService().severe('SQLite FFI failure: $e/$stack');
+      print('SQLite FFI failure: $e/$stack');
+    }
   }
 
   // Initialize Hive for desktop

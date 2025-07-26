@@ -1,5 +1,7 @@
 import 'package:daggerheart/screens/card_screens/armour_list_screen.dart';
+import 'package:daggerheart/screens/card_screens/items_list_screen.dart';
 import 'package:daggerheart/screens/card_screens/weapon_list_screen.dart';
+import 'package:daggerheart/screens/rules_content_screen.dart';
 import '../screens/character_list_screen.dart';
 import 'package:flutter/material.dart';
 import '../screens/settings_screen.dart';
@@ -84,7 +86,12 @@ class _SidebarMenuState extends State<SidebarMenu> {
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Items'),
-                    onTap: () => widget.onSelectContent(Placeholder()),
+                    onTap: () => widget.onSelectContent(ItemsListScreen()),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.style),
+                    title: Text('Rules'),
+                    onTap: () => widget.onSelectContent(RulesContentScreen()),
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),
