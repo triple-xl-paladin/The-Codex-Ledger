@@ -54,7 +54,7 @@ This app is built with **Flutter** and requires a working Flutter development en
 
 - [Flutter SDK](https://flutter.dev/docs/get-started/install)
 - Git
-- Android Studio or VS Code (optional, but recommended)
+- Android Studio or VS Code
 
 ### Installation
 
@@ -77,7 +77,7 @@ This app is built with **Flutter** and requires a working Flutter development en
    flutter run
    ```
 
-> Note: No official data is included. You can load or create your own custom content through JSON files.
+> Note: No official data is included. You can load or create your own custom content through JSON and Markdown files.
 > Templates have been included
 
 ---
