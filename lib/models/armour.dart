@@ -12,6 +12,7 @@ class ArmourModel {
   final String feature;
   final int tier;
   final String? image;
+  bool equipped;
 
   ArmourModel({
     required this.armourId,
@@ -21,7 +22,8 @@ class ArmourModel {
     required this.baseScore,
     required this.feature,
     required this.tier,
-    this.image
+    this.image,
+    this.equipped = false,
   });
 
   static int _parseInt(dynamic value, {int fallback = 0}) {
@@ -52,6 +54,7 @@ class ArmourModel {
       feature: json['feature'] ?? '',
       tier: _parseInt(json['tier']),
       image: json['image'] ?? '',
+      equipped: json['equipped'] == true, // ensure it's a boolean
     );
   }
 
@@ -98,7 +101,36 @@ class ArmourModel {
     'armourFeature': feature,
     'image': image,
     'tier': tier,
+    'equipped': equipped,
   };
+
+  ArmourModel copyWith({
+    int? armourId,
+    String? name,
+    int? baseThreshold1,
+    int? baseThreshold2,
+    int? baseScore,
+    String? feature,
+    int? tier,
+    String? image,
+    bool? equipped,
+  }) {
+    return ArmourModel(
+      armourId: armourId ?? this.armourId,
+      name: name ?? this.name,
+      baseThreshold1: baseThreshold1 ?? this.baseThreshold1,
+      baseThreshold2: baseThreshold2 ?? this.baseThreshold2,
+      baseScore: baseScore ?? this.baseScore,
+      feature: feature ?? this.feature,
+      tier: tier ?? this.tier,
+      image: image ?? this.image,
+      equipped: equipped ?? this.equipped,
+    );
+  }
+
+  /// Get a string of armour name to show whether the character has equipped
+  /// the armour
+  String get displayName => equipped ? '$name (Equipped)' : name;
 
   @override
   bool operator ==(Object other) =>
@@ -110,5 +142,16 @@ class ArmourModel {
   @override
   int get hashCode => armourId.hashCode;
 
+  Map<String, dynamic> toJson() => {
+    'id': armourId,
+    'name': name,
+    'base_threshold1': baseThreshold1,
+    'base_threshold2': baseThreshold2,
+    'base_score': baseScore,
+    'feature': feature,
+    'tier': tier,
+    'image': image,
+    'equipped': equipped,
+  };
 
 }

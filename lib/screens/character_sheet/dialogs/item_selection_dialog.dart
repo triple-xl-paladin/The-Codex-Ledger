@@ -44,6 +44,8 @@ class _ItemSelectionDialogState extends State<ItemSelectionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Dialog(
       child: Column(
         children: [
@@ -85,7 +87,7 @@ class _ItemSelectionDialogState extends State<ItemSelectionDialog> {
                         children: [
                           MarkdownWidget(
                             data: items.itemFeature ?? '-',
-                            config: darkFantasyMarkdownConfig,
+                            config: buildMarkdownConfigFromTheme(theme),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),

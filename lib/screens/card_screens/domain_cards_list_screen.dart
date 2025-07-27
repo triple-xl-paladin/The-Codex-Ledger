@@ -18,7 +18,7 @@ class DomainCardsListScreen extends StatefulWidget {
 
 class _DomainCardsListScreenState extends State<DomainCardsListScreen> {
   String? _selectedDomain;
-  final List<int> _tiers = [0,1,2,3,4,5];
+  //final List<int> _tiers = [0,1,2,3,4,5];
 
   String _searchQuery = '';
   int _selectedTier = 0; // 0 means "no tier filter"
@@ -73,6 +73,8 @@ class _DomainCardsListScreenState extends State<DomainCardsListScreen> {
   }
 
   Widget _buildCardTile(DomainCardModel card) {
+    final theme = Theme.of(context);
+    
     return ListTile(
       leading: SizedBox(
         width: 50,
@@ -90,7 +92,7 @@ class _DomainCardsListScreenState extends State<DomainCardsListScreen> {
         children: [
           MarkdownWidget(
             data: card.feature,
-            config: darkFantasyMarkdownConfig,
+            config: buildMarkdownConfigFromTheme(theme),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

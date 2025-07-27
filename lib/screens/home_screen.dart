@@ -2,6 +2,7 @@ import 'package:daggerheart/screens/card_screens/armour_list_screen.dart';
 import 'package:daggerheart/screens/debug_test_screen.dart';
 import 'package:daggerheart/screens/card_screens/items_list_screen.dart';
 import 'package:daggerheart/screens/card_screens/weapon_list_screen.dart';
+import 'package:daggerheart/screens/rules_content_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,14 +10,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:daggerheart/widgets/sidebar_menu.dart';
 import 'package:daggerheart/widgets/feature_grid_tile.dart';
 
-// import 'settings_screen.dart';
 import 'package:daggerheart/screens/character_list_screen.dart';
 import 'package:daggerheart/screens/card_category_screen.dart';
 import 'package:daggerheart/screens/debug_database_screen.dart';
-import 'package:provider/provider.dart';
-
-import '../providers/app_data_provider.dart';
-// import 'domain_cards_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -74,6 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
         'title': 'Items',
         'icon': Icons.inventory_2,
         'content': ItemsListScreen(),
+      },
+      {
+        'title': 'Rules',
+        'icon': Icons.library_books,
+        'content': RulesContentScreen(),
       },
     ]);
 

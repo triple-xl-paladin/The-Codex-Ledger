@@ -1,5 +1,7 @@
 import 'package:daggerheart/providers/app_data_provider.dart';
 import 'package:daggerheart/screens/character_sheet/character_armour_section.dart';
+import 'package:daggerheart/screens/character_sheet/character_damage_section.dart';
+import 'package:daggerheart/screens/character_sheet/character_derived_section.dart';
 import 'package:daggerheart/screens/character_sheet/character_items_section.dart';
 import 'package:daggerheart/screens/character_sheet/character_weapons_section.dart';
 import 'package:flutter/material.dart';
@@ -127,6 +129,24 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                     });
                   }),
               SizedBox(height: 16),
+              CharacterDerivedSection(
+                  character: _character!,
+                  onCharacterUpdated: (updated) {
+                    setState(() {
+                      _character = updated;
+                    });
+                  }
+              ),
+              SizedBox(height: 16),
+              CharacterDamageSection(
+                  character: _character!,
+                  onCharacterUpdated: (updated) {
+                    setState(() {
+                      _character = updated;
+                    });
+                  }
+              ),
+              SizedBox(height: 16),
               Text(
                 'Attributes',
                 style: Theme.of(context).textTheme.titleLarge,
@@ -152,13 +172,6 @@ class _CharacterSheetScreenState extends State<CharacterSheetScreen> {
                   character: _character!,
                   ),
               SizedBox(height: 16),
-
-              // Domain card deck
-              Text(
-                'Domain Deck',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              SizedBox(height: 8),
               DomainDeckSection(
                   character: _character!,
                   onCharacterUpdated: (updated) {

@@ -43,6 +43,8 @@ class _WeaponSelectionDialogState extends State<WeaponSelectionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Dialog(
       child: Column(
         children: [
@@ -84,7 +86,7 @@ class _WeaponSelectionDialogState extends State<WeaponSelectionDialog> {
                         children: [
                           MarkdownWidget(
                             data: weapon.feature,
-                            config: darkFantasyMarkdownConfig,
+                            config: buildMarkdownConfigFromTheme(theme),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),

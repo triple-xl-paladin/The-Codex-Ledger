@@ -28,13 +28,15 @@ class CharacterClassFeatureSection extends StatelessWidget {
   });
 
   Widget buildHopeFeature(BuildContext context, CharacterClass cls) {
+    final theme = Theme.of(context);
+    
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-            Text('Hope Feature', style: TextStyle(fontWeight: FontWeight.bold),),
+            Text('Hope Feature', style: Theme.of(context).textTheme.titleLarge,),
             MarkdownWidget(
               data: cls.hopeFeature, //?? 'No hope feature',
-              config: darkFantasyMarkdownConfig,
+              config: buildMarkdownConfigFromTheme(theme),
               shrinkWrap: true,
             )
       ]
@@ -42,10 +44,12 @@ class CharacterClassFeatureSection extends StatelessWidget {
   }
 
   Widget buildClassFeatures(BuildContext context, CharacterClass cls) {
+    final theme = Theme.of(context);
+    
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Class Features', style: TextStyle(fontWeight: FontWeight.bold),),
+          Text('Class Features', style: Theme.of(context).textTheme.titleLarge,),
           SizedBox(height: 8,),
           Wrap(
             spacing: 8,
@@ -58,7 +62,7 @@ class CharacterClassFeatureSection extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: MarkdownWidget(
                     data: feature, // ?? 'No class feature',
-                    config: darkFantasyMarkdownConfig,
+                    config: buildMarkdownConfigFromTheme(theme),
                     shrinkWrap: true,
                   ),
                 ),

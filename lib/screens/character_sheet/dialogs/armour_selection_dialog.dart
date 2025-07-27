@@ -44,6 +44,8 @@ class _ArmourSelectionDialogState extends State<ArmourSelectionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Dialog(
       child: Column(
         children: [
@@ -85,7 +87,7 @@ class _ArmourSelectionDialogState extends State<ArmourSelectionDialog> {
                         children: [
                           MarkdownWidget(
                             data: armour.feature,
-                            config: darkFantasyMarkdownConfig,
+                            config: buildMarkdownConfigFromTheme(theme),
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                           ),

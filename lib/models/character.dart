@@ -2,9 +2,7 @@ import 'package:daggerheart/models/armour.dart';
 import 'package:daggerheart/models/items.dart';
 import 'package:daggerheart/models/weapon.dart';
 import 'package:daggerheart/models/domain_card.dart';
-import 'package:daggerheart/providers/app_data_provider.dart';
 import 'package:daggerheart/utils/debug_utils.dart';
-import 'package:flutter/cupertino.dart';
 
 enum Attribute {
   agility,
@@ -31,6 +29,9 @@ class Character {
   final String? characterAncestry;
   final String? characterHeritage;
   final Map<Attribute, int>? attributes;
+  final int? characterStress;
+  final int? characterHope;
+  final int? characterProficiencyBonus;
 
   Character({
     required this.characterId,
@@ -47,6 +48,9 @@ class Character {
     this.characterAncestry,
     this.characterHeritage,
     this.attributes,
+    this.characterStress,
+    this.characterHope,
+    this.characterProficiencyBonus,
   });
 
   factory Character.newCharacter(String name) {
@@ -74,6 +78,9 @@ class Character {
     int? characterLevel,
     int? characterEvasion,
     int? characterHitpoints,
+    int? characterStress,
+    int? characterHope,
+    int? characterProficiencyBonus,
     String? characterClass,
     String? characterSubclass,
     String? characterAncestry,
@@ -90,6 +97,9 @@ class Character {
       characterLevel: characterLevel ?? this.characterLevel,
       characterEvasion: characterEvasion ?? this.characterEvasion,
       characterHitpoints: characterHitpoints ?? this.characterHitpoints,
+      characterStress: characterStress ?? this.characterStress,
+      characterProficiencyBonus: characterProficiencyBonus ?? this.characterProficiencyBonus,
+      characterHope: characterHope ?? this.characterHope,
       characterClass: characterClass ?? this.characterClass,
       characterSubclass: characterSubclass ?? this.characterSubclass,
       characterAncestry: characterAncestry ?? this.characterAncestry,
@@ -150,12 +160,42 @@ class Character {
     'characterLevel': characterLevel,
     'characterEvasion': characterEvasion,
     'characterHitpoints': characterHitpoints,
+    'characterHope': characterHope,
+    'characterStress': characterStress,
+    'characterProficiencyBonus': characterProficiencyBonus,
     'characterClass': characterClass,
     'characterSubclass': characterSubclass,
     'characterAncestry': characterAncestry,
     'characterHeritage': characterHeritage,
     'attributes': attributes?.map((key, value) => MapEntry(key.name, value)),
   };
+
+  /// Base proficiency based on character level
+  int get baseProficiency {
+     final level = characterLevel ?? 1;
+     if (level >= 8) return 3;
+     if (level >= 5) return 2;
+     return 1;
+  }
+
+  /// Total proficiency (editable by user, defaults to base)
+  int get totalProficiency {
+    return baseProficiency + (characterProficiencyBonus ?? 0);
+  }
+
+  /// Bonus is the difference between total and base
+  int get bonusProficiency {
+    final total = totalProficiency;
+    final base = baseProficiency;
+    return (total > base) ? total - base : 0;
+  }
+
+  /// Used when the user edits total proficiency directly in UI
+  /// Only ever stores the bonus, not the base proficiency value
+  Character withUpdatedProficiency(int newTotal) {
+    final bonus = newTotal - baseProficiency; // determine the bonus element
+    return copyWith(characterProficiencyBonus: bonus > 0 ? bonus : 0);
+  }
 
   factory Character.fromJson(
       Map<String, dynamic> json,
@@ -201,7 +241,7 @@ class Character {
 
         final match = allWeapons.where((w) => w.id == weaponId);
         if (match.isEmpty) {
-          debugLog('⚠️ No matching weapon for id $weaponId in: ${allWeapons.map((a) => a.id)}');
+          debugLog('No matching weapon for id $weaponId in: ${allWeapons.map((a) => a.id)}');
           return null; // Or throw or a fallback
         }
 
@@ -210,14 +250,23 @@ class Character {
 
 
       armours: (json['armours'] as List<dynamic>? ?? [])
-        .map((id) => allArmour.firstWhere((w) => w.armourId == id))
-        .toList(),
+        .map((data) {
+          final id = data['id'];
+          final base = allArmour.firstWhere(
+              (w) => w.armourId == id,
+            orElse: () => throw Exception('Armour ID $id not found in allArmour'),
+          );
+            return base.copyWith(equipped: data['equipped'] == true);
+        }).toList(),
       items: (json['items'] as List<dynamic>? ?? [])
         .map((id) => allItems.firstWhere((w) => w.itemId == id))
         .toList(),
       characterLevel: json['characterLevel'],
       characterEvasion: json['characterEvasion'],
       characterHitpoints: json['characterHitpoints'],
+      characterHope: json['characterHope'],
+      characterStress: json['characterStress'],
+      characterProficiencyBonus: json['characterProficiencyBonus'],
       characterClass: json['characterClass'],
       characterSubclass: json['characterSubclass'],
       characterAncestry: json['characterAncestry'],

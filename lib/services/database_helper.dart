@@ -3,6 +3,7 @@ import 'dart:async';
 //import 'package:daggerheart/models/items.dart';
 //import 'package:daggerheart/models/weapon.dart';
 import 'package:daggerheart/providers/app_data_provider.dart';
+import 'package:daggerheart/services/logging_service.dart';
 import 'package:daggerheart/utils/debug_utils.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -38,6 +39,7 @@ class DatabaseHelper {
     }
      */
 
+    LoggingService().info('${DateTime.now()}: Database to be loaded $path');
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -45,6 +47,8 @@ class DatabaseHelper {
   /// Create the table to store characters from [Character]
   ///
   Future _createDB(Database db, int version) async {
+    LoggingService().info('${DateTime.now()}: Database tables to be created');
+
     // Create Character table
     await db.execute('''
       CREATE TABLE characters (
@@ -53,6 +57,9 @@ class DatabaseHelper {
         characterLevel INTEGER,
         characterEvasion INTEGER,
         characterHitPoints INTEGER,
+        characterStress INTEGER,
+        characterHope INTEGER,
+        characterProficiencyBonus INTEGER,
         characterClass TEXT,
         characterSubclass TEXT,
         characterAncestry TEXT,
@@ -117,6 +124,7 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         characterId INTEGER,
         armourId INTEGER,
+        equipped INTEGER DEFAULT 0,
         FOREIGN KEY(characterId) REFERENCES characters(characterId) ON DELETE CASCADE
       )
     ''');
@@ -138,8 +146,10 @@ class DatabaseHelper {
       )
     ''');
 
+    LoggingService().info('${DateTime.now()}: Database tables created');
   }
 
+  /*
   /// Helper to build the Map for Attributes enum
   Map<Attribute, int> _extractAttributes(Map<String, Object?> row) {
     return {
@@ -147,6 +157,7 @@ class DatabaseHelper {
         attr: row['character${_capitalize(attr.name)}'] as int? ?? 0,
     };
   }
+   */
 
   String _capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
@@ -159,6 +170,9 @@ class DatabaseHelper {
       'characterLevel': character.characterLevel,
       'characterEvasion': character.characterEvasion,
       'characterHitPoints': character.characterHitpoints,
+      'characterStress': character.characterStress,
+      'characterHope': character.characterHope,
+      'characterProficiencyBonus': character.characterProficiencyBonus,
       'characterClass': character.characterClass,
       'characterSubclass': character.characterSubclass,
       'characterAncestry': character.characterAncestry,
@@ -206,6 +220,7 @@ class DatabaseHelper {
       await db.insert('armour', {
         'characterId': id,
         'armourId': armour.armourId,
+        'equipped': armour.equipped ? 1:0,
       });
     }
 
@@ -259,6 +274,9 @@ class DatabaseHelper {
       'characterLevel': character.characterLevel,
       'characterEvasion': character.characterEvasion,
       'characterHitPoints': character.characterHitpoints,
+      'characterStress': character.characterStress,
+      'characterHope': character.characterHope,
+      'characterProficiencyBonus': character.characterProficiencyBonus,
       'characterClass': character.characterClass,
       'characterSubclass': character.characterSubclass,
       'characterAncestry': character.characterAncestry,
@@ -326,6 +344,7 @@ class DatabaseHelper {
       await db.insert('armour', {
         'characterId': character.characterId,
         'armourId': armour.armourId,
+        'equipped': armour.equipped ? 1 : 0,
       });
     }
 
@@ -361,7 +380,7 @@ class DatabaseHelper {
     final dbFile = File(path);
 
     if (await dbFile.exists()) {
-      debugLog('Deleting existing database at $path');
+      LoggingService().info('${DateTime.now()}: Deleting existing database at $path');
       await dbFile.delete();
     }
 
@@ -419,7 +438,12 @@ class DatabaseHelper {
     );
 
     final allArmour = appData.armours;
-    final armours = armourRows.map((row) => allArmour.firstWhere((a) => a.armourId == parseInt(row['armourId']))).toList();
+    //final armours = armourRows.map((row) => allArmour.firstWhere((a) => a.armourId == parseInt(row['armourId']))).toList();
+
+    final armours = armourRows.map((row) {
+      final armour = allArmour.firstWhere((a) => a.armourId == parseInt(row['armourId']));
+      return armour.copyWith(equipped: parseInt(row['equipped']) == 1);
+    }).toList();
 
     // converts map to a list of type ArmourModel
     //List<ArmourModel> armour = armourRows.map((c) => ArmourModel.fromDb(c)).toList();
@@ -437,18 +461,21 @@ class DatabaseHelper {
     //List<ItemsModel> items = itemsRows.map((c) => ItemsModel.fromDb(c)).toList();
 
     final characterJson = {
-      'characterId': parseInt(charRow['characterId'])!,
+      'characterId': parseInt(charRow['characterId']),
       'name': charRow['name'] as String,
       'characterClass': charRow['characterClass'] as String?,
       'characterLevel': charRow['characterLevel'] as int?,
       'characterEvasion': charRow['characterEvasion'] as int?,
       'characterHitpoints': charRow['characterHitPoints'] as int?,
+      'characterStress':charRow['characterStress'] as int?,
+      'characterHope':charRow['characterHope'] as int?,
+      'characterProficiencyBonus':charRow['characterProficiencyBonus'] as int?,
       'characterSubclass': charRow['characterSubclass'] as String?,
       'characterAncestry': charRow['characterAncestry'] as String?,
       'characterHeritage': charRow['characterHeritage'] as String?,
       'deck': deck.map((card) => card.toJson()).toList(),
       'weapons':weapons.map((w) => w.id).toList(),
-      'armours':armours.map((a) => a.armourId).toList(),
+      'armours':armours.map((a) => a.toJson()).toList(),
       'items': items.map((i) => i.itemId).toList(),
       'attributes': {
         for (var attr in Attribute.values)

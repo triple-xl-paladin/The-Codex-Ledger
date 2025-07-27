@@ -33,6 +33,8 @@ class _HeritageCardsListScreenState extends State<HeritageCardsListScreen> {
   }
 
   Widget _buildCardTile(CharacterHeritage card) {
+    final theme = Theme.of(context);
+
     return ListTile(
       leading: (card.image != null)
           ? SizedBox(
@@ -52,7 +54,7 @@ class _HeritageCardsListScreenState extends State<HeritageCardsListScreen> {
         children: [
           MarkdownWidget(
             data: card.description,
-            config: darkFantasyMarkdownConfig,
+            config: buildMarkdownConfigFromTheme(theme),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

@@ -32,6 +32,8 @@ class _AncestryCardsListScreenState extends State<AncestryCardsListScreen> {
   }
 
   Widget _buildCardTile(CharacterAncestry card) {
+    final theme = Theme.of(context);
+
     return ListTile(
       leading: (card.image != null)
           ? SizedBox(
@@ -51,7 +53,7 @@ class _AncestryCardsListScreenState extends State<AncestryCardsListScreen> {
         children: [
           MarkdownWidget(
             data: card.description,
-            config: darkFantasyMarkdownConfig,
+            config: buildMarkdownConfigFromTheme(theme),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

@@ -54,6 +54,13 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
     );
 
     if (selectedArmour != null && selectedArmour.isNotEmpty) {
+
+      // Ensure exactly one armour is equipped
+      bool anyEquipped = selectedArmour.any((a) => a.equipped);
+      if (!anyEquipped) {
+        selectedArmour[0].equipped = true;
+      }
+
       final updated = widget.character.copyWith(armours: selectedArmour);
       debugLog('CharacterArmourSection: Updated armour size: ${updated.weapons.length}');
       widget.onCharacterUpdated(updated);
@@ -71,10 +78,11 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Weapons',
+          'Armour',
           style: Theme.of(context).textTheme.titleLarge,
         ),
         const SizedBox(height: 8),
+        // Desktop view
         isDesktop
             ? Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,12 +93,24 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
               label: Text('Add Armour'),
             ),
             const SizedBox(height: 8),
-            ...armours.map((armours) => ListTile(
-              title: Text(armours.name),
-              subtitle: Text('Base Score ${armours.baseScore} • Threshold ${armours.baseThreshold1}/${armours.baseThreshold2} • Tier ${armours.tier}'),
+            ...armours.map((armour) => RadioListTile<int?>(
+              title: Text(armour.displayName),
+              subtitle: Text('Base Score ${armour.baseScore} • Threshold ${armour.baseThreshold1}/${armour.baseThreshold2} • Tier ${armour.tier}'),
+              value: armour.armourId,
+              groupValue: armours.firstWhere((a) => a.equipped, orElse: () => armours.first).armourId,
+              onChanged: (selectedId) {
+                setState(() {
+                  for (var a in armours) {
+                    a.equipped = (a.armourId == selectedId);
+                  }
+                  final updatedCharacter = widget.character.copyWith(armours: armours);
+                  widget.onCharacterUpdated(updatedCharacter);
+                });
+              },
             )),
           ],
         )
+        // Mobile view
             : GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: _handleArmourSelection,
@@ -104,7 +124,7 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
             ),
             child: const Center(
               child: Text(
-                'No domain cards in deck\nTap to add cards',
+                'Tap to add armour',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.white70),
               ),
@@ -116,14 +136,27 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final armour = armours[index];
-              return ListTile(
-                title: Text(armour.name),
+              return RadioListTile<int?>(
+                title: Text(armour.displayName),
                 subtitle: Text('Base Score ${armour.baseScore} • Threshold ${armour.baseThreshold1}/${armour.baseThreshold2} • Tier ${armour.tier}'),
+                value: armour.armourId,
+                groupValue: armours.any((a) => a.equipped)
+                  ? armours.firstWhere((a) => a.equipped).armourId
+                  :null,
+                onChanged: (selectedId) {
+                  setState(() {
+                    for (var a in armours) {
+                      a.equipped = a.armourId == selectedId;
+                    }
+                    final updatedCharacter = widget.character.copyWith(armours: armours);
+                    widget.onCharacterUpdated(updatedCharacter);
+                  });
+                }, // onChanged
               );
-            },
+            }, // itemBuilder
           ),
         ),
-      ],
+      ], // children
     );
-  }
+  } // build
 }
