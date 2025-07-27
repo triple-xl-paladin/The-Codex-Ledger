@@ -1,3 +1,20 @@
+/*
+ * This file is part of The Codex Ledger.
+ *
+ * The Codex Ledger is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * The Codex Ledger is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with The Codex Ledger.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import 'package:daggerheart/screens/card_screens/armour_list_screen.dart';
 import 'package:daggerheart/screens/card_screens/items_list_screen.dart';
 import 'package:daggerheart/screens/card_screens/weapon_list_screen.dart';
@@ -61,45 +78,69 @@ class _SidebarMenuState extends State<SidebarMenu> {
                     // Leave this as Placeholder as it will reset the screen to home
                     // If it points to homescreen, it will keep recreating the screen
                     // within the homescreen, duplicating everything.
-                    onTap: () => widget.onSelectContent(Placeholder()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(Placeholder());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Cards'),
-                    onTap: () => widget.onSelectContent(CardCategoryScreenContent(onCategorySelected: widget.onSelectContent)),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(CardCategoryScreenContent(onCategorySelected: widget.onSelectContent));
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Characters'),
-                    onTap: () => widget.onSelectContent(CharacterListScreen()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(CharacterListScreen());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Weapons'),
-                    onTap: () => widget.onSelectContent(WeaponListScreen()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(WeaponListScreen());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Armour'),
-                    onTap: () => widget.onSelectContent(ArmourListScreen()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(ArmourListScreen());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Items'),
-                    onTap: () => widget.onSelectContent(ItemsListScreen()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(ItemsListScreen());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.style),
                     title: Text('Rules'),
-                    onTap: () => widget.onSelectContent(RulesContentScreen()),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(RulesContentScreen());
+                    },
                   ),
                   ListTile(
                     leading: Icon(Icons.settings),
                     title: Text('Settings'),
-                    onTap: () => widget.onSelectContent(SettingsScreen(
-                      isDarkMode: widget.isDarkMode,
-                      onThemeChanged: widget.onThemeChanged,
-                    )),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      widget.onSelectContent(SettingsScreen(
+                        isDarkMode: widget.isDarkMode,
+                        onThemeChanged: widget.onThemeChanged,
+                      ));
+                    },
                   ),
                 ], // Children in expanded
               ),

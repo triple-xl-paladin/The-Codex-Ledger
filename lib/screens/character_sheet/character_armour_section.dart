@@ -32,9 +32,9 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
     final characterLevel = widget.character.characterLevel;
 
     final armours = allArmour.where((armour) {
-      final weaponTier = armour.tier;
+      final armourTier = armour.tier;
       final allowedTier = levelToTier[characterLevel ?? 1] ?? 1;
-      return weaponTier <= allowedTier;
+      return armourTier <= allowedTier;
     }).toList();
 
     if (!mounted) return;
@@ -53,16 +53,18 @@ class _CharacterArmourSectionState extends State<CharacterArmourSection> {
       ),
     );
 
-    if (selectedArmour != null && selectedArmour.isNotEmpty) {
-
-      // Ensure exactly one armour is equipped
-      bool anyEquipped = selectedArmour.any((a) => a.equipped);
-      if (!anyEquipped) {
-        selectedArmour[0].equipped = true;
+    if (selectedArmour != null) {
+      // Only if there is still an armour equipped
+      if (selectedArmour.isNotEmpty) {
+        // Ensure exactly one armour is equipped
+        bool anyEquipped = selectedArmour.any((a) => a.equipped);
+        if (!anyEquipped) {
+          selectedArmour[0].equipped = true;
+        }
       }
 
       final updated = widget.character.copyWith(armours: selectedArmour);
-      debugLog('CharacterArmourSection: Updated armour size: ${updated.weapons.length}');
+      debugLog('CharacterArmourSection: Updated armour size: ${updated.armours.length}');
       widget.onCharacterUpdated(updated);
     }
   }

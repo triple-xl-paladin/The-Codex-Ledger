@@ -53,7 +53,7 @@ class _CharacterWeaponsSectionState extends State<CharacterWeaponsSection> {
       ),
     );
 
-    if (selectedWeapons != null && selectedWeapons.isNotEmpty) {
+    if (selectedWeapons != null) {
       final updated = widget.character.copyWith(weapons: selectedWeapons);
       debugLog('CharacterWeaponSection: Updated weapons size: ${updated.weapons.length}');
       widget.onCharacterUpdated(updated);

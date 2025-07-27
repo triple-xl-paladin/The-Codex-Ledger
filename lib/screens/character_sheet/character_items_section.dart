@@ -43,9 +43,9 @@ class _CharacterItemsSectionState extends State<CharacterItemsSection> {
       ),
     );
 
-    if (selectedItems != null && selectedItems.isNotEmpty) {
+    if (selectedItems != null) {
       final updated = widget.character.copyWith(items: selectedItems);
-      debugLog('CharacterItemSection: Updated items size: ${updated.weapons.length}');
+      debugLog('CharacterItemSection: Updated items size: ${updated.items.length}');
       widget.onCharacterUpdated(updated);
     }
   }
