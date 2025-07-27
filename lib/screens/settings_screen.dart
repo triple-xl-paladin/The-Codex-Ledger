@@ -1,12 +1,8 @@
-import 'package:daggerheart/screens/show_LogViewer_Dialog.dart';
-import 'package:daggerheart/services/theme_loader_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/database_helper.dart';
-import 'package:daggerheart/providers/theme_provider.dart';
 import 'dart:async';
+
 
 class SettingsScreen extends StatefulWidget {
   final bool isDarkMode;
@@ -50,21 +46,6 @@ Cards created via the daggerheart.com card creator must display the following on
 "Daggerheart™ Compatible. Terms at Daggerheart.com"
 ''';
 
-  bool _themesLoaded = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _loadThemeManifest();
-  }
-
-  Future<void> _loadThemeManifest() async {
-    await ThemeLoader.loadThemesFromManifest();
-    setState(() {
-      _themesLoaded = true;
-    });
-  }
-
   Future<void> _launchUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -74,12 +55,10 @@ Cards created via the daggerheart.com card creator must display the following on
   }
 
   void _viewLogs() {
-    showLogViewerDialog(context);
-    /*
+    // TODO: Implement your log viewer or navigate to a logs screen
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('View logs clicked')),
     );
-     */
   }
 
   void _importData() {
@@ -107,14 +86,16 @@ Cards created via the daggerheart.com card creator must display the following on
         return StatefulBuilder(
           builder: (context, setState) {
             // Start timer only once
-            timer ??= Timer.periodic(const Duration(seconds:1), (t) {
-              if(countdown == 1) {
-                t.cancel();
-              }
-              setState(() {
-                countdown--;
+            if(timer == null) {
+              timer = Timer.periodic(const Duration(seconds:1), (t) {
+                if(countdown == 1) {
+                  t.cancel();
+                }
+                setState(() {
+                  countdown--;
+                });
               });
-            });
+            }
 
             final confirmEnabled = countdown <= 0;
 
@@ -156,24 +137,6 @@ Cards created via the daggerheart.com card creator must display the following on
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-    //final currentTheme = themeProvider.themeData;
-    final box = Hive.box('settings');
-
-    /*
-    // Find matching key for current theme
-    String? currentThemeKey = AppThemes.allThemes.entries
-        .firstWhere((entry) => entry.value == currentTheme, orElse: () => MapEntry("Unknown", ThemeData()))
-        .key;
-     */
-    if (!_themesLoaded) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    //final String currentThemeKey = box.get('selectedThemeKey', defaultValue: 'Dark Fantasy');
-    final savedKey = box.get('selectedThemeKey', defaultValue: '');
-    final currentThemeKey = savedKey.isEmpty ? null : savedKey;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -183,43 +146,13 @@ Cards created via the daggerheart.com card creator must display the following on
         children: [
           // Theme toggle
           ListTile(
-            leading: const Icon(Icons.color_lens),
-            title: const Text('Theme'),
-            subtitle: DropdownButtonFormField<String>(
-              value: currentThemeKey,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 12),
-                border: OutlineInputBorder(),
-              ),
-              items: [
-                const DropdownMenuItem<String>(
-                  value: null,
-                  child:  Text("Default (Flutter Light)"),
-                ),
-                ...ThemeLoader.themeManifest.keys.map((key) {
-                  return DropdownMenuItem<String>(
-                    value: key,
-                    child: Text(key),
-                  );
-                }),
-              ],
-              onChanged: (selectedKey) async {
-                if (selectedKey == null) {
-                  // Default theme
-                  themeProvider.setTheme(ThemeData.light());
-
-                  // Save default theme key to Hive
-                  await box.put('selectedThemeKey', '');
-                } else {
-                  final selectedTheme = await ThemeLoader.loadThemeFromJson(
-                    ThemeLoader.themeManifest[selectedKey]!,
-                  );
-                  themeProvider.setTheme(selectedTheme);
-
-                  // Save selected theme key to Hive
-                  await box.put('selectedThemeKey', selectedKey);
-                } // if
-              }, // onChanged
+            leading: Icon(widget.isDarkMode ? Icons.dark_mode : Icons.light_mode),
+            title: const Text('Dark Theme WIP'),
+            trailing: Switch(
+              value: widget.isDarkMode,
+              onChanged: (val) {
+                widget.onThemeChanged(val);
+              },
             ),
           ),
           const Divider(),
@@ -240,7 +173,7 @@ Cards created via the daggerheart.com card creator must display the following on
           // View logs
           ListTile(
             leading: const Icon(Icons.receipt_long),
-            title: const Text('View Logs'),
+            title: const Text('View Logs WIP'),
             onTap: _viewLogs,
           ),
           const Divider(),

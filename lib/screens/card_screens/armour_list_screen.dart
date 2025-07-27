@@ -8,6 +8,7 @@ import '../../providers/app_data_provider.dart';
 //import '../services/card_service.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import '../../theme/markdown_theme.dart';
+import '../../utils/debug_utils.dart'; // adjust path as needed
 
 class ArmourListScreen extends StatefulWidget {
   
@@ -99,8 +100,6 @@ class _ArmourListScreenState extends State<ArmourListScreen> {
   }
 
   Widget _buildArmourTile(ArmourModel armourItem) {
-    final theme = Theme.of(context);
-
     return ListTile(
       leading: (armourItem.image != null)
           ? SizedBox(
@@ -120,7 +119,7 @@ class _ArmourListScreenState extends State<ArmourListScreen> {
         children: [
           MarkdownWidget(
             data: armourItem.feature,
-            config: buildMarkdownConfigFromTheme(theme),
+            config: darkFantasyMarkdownConfig,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

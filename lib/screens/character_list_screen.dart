@@ -2,7 +2,7 @@ import 'package:daggerheart/screens/character_sheet/character_sheet_screen.dart'
 import 'package:flutter/material.dart';
 import '../models/character.dart';
 import '../services/database_helper.dart';
-import '../services/logging_service.dart';
+//import 'character_deck_screen.dart'; // (we’ll create this next)
 
 class CharacterListScreen extends StatefulWidget {
   const CharacterListScreen({super.key});
@@ -21,25 +21,15 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
   }
 
   Future<void> _loadCharacters() async {
-    try {
-      final chars = await DatabaseHelper.instance.getCharacters();
-      setState(() {
-        characters = chars;
-      });
-      LoggingService().info('${DateTime.now()}: Number of characters loaded: ${chars.length}');
-    } catch (e, stack) {
-      LoggingService().severe('Error loading character: $e\n$stack');
-    }
+    final chars = await DatabaseHelper.instance.getCharacters();
+    setState(() {
+      characters = chars;
+    });
   }
 
   void _deleteCharacter(Character character) async {
-    try {
-      await DatabaseHelper.instance.deleteCharacter(character.characterId!);
-      LoggingService().info('${DateTime.now()}: Deleted character: ${character.characterId}/${character.name}');
-      _loadCharacters();
-    } catch (e,stack) {
-      LoggingService().severe('Error deleting character: $e\n$stack');
-    }
+    await DatabaseHelper.instance.deleteCharacter(character.characterId!);
+    _loadCharacters();
   }
 
   void _showCreateCharacterDialog() {
@@ -62,23 +52,11 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
             onPressed: () async {
               final name = nameController.text.trim();
               if (name.isNotEmpty) {
-                try {
-                  final newCharacter = Character.newCharacter(name);
-                  await DatabaseHelper.instance.insertCharacter(newCharacter);
-
-                  // Log successful character creation
-                  LoggingService().info('${DateTime.now()}: New character ${newCharacter.name} created.');
-                  if (!mounted) return;
-
-                  Navigator.of(context).pop();
-                  // Force a UI rebuild
-                  setState(() {
-
-                  });
-                  await _loadCharacters();
-                } catch (e,stack) {
-                  LoggingService().severe('Error creating character: $e\n$stack');
-                }
+                final newCharacter = Character.newCharacter(name);
+                await DatabaseHelper.instance.insertCharacter(newCharacter);
+                if(!mounted) return;
+                Navigator.of(context).pop();
+                _loadCharacters();
               }
             },
             child: Text('Create'),

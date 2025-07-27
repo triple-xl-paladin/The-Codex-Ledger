@@ -1,7 +1,9 @@
-import 'package:daggerheart/models/character_subclass.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:markdown_widget/markdown_widget.dart';
+
+import 'package:daggerheart/models/domain_card.dart';
+//import 'package:daggerheart/services/card_service.dart';
 import 'package:daggerheart/theme/markdown_theme.dart';
 import 'package:daggerheart/providers/app_data_provider.dart'; // adjust path as needed
 
@@ -16,16 +18,16 @@ class SubclassCardsListScreen extends StatefulWidget {
 }
 
 class _SubclassCardsListScreenState extends State<SubclassCardsListScreen> {
-  List<CharacterSubclass> _filteredCards = [];
+  List<DomainCardModel> _filteredCards = [];
   String _searchQuery = '';
   String? currentSubclass;
 
-  void _applyFilters(List<CharacterSubclass> cards) {
+  void _applyFilters(List<DomainCardModel> cards) {
     setState(() {
       _filteredCards = cards.where((card) {
         final matchesSearch = _searchQuery.isEmpty ||
             card.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
-            card.description.toLowerCase().contains(_searchQuery.toLowerCase());
+            card.feature.toLowerCase().contains(_searchQuery.toLowerCase());
 
         final matchesSubclass = currentSubclass == null || card.name == currentSubclass;
 
@@ -37,7 +39,6 @@ class _SubclassCardsListScreenState extends State<SubclassCardsListScreen> {
   @override
   Widget build(BuildContext context) {
     final appData = Provider.of<AppDataProvider>(context);
-    final theme = Theme.of(context);
 
     if (appData.isLoading) {
       return Scaffold(
@@ -53,7 +54,7 @@ class _SubclassCardsListScreenState extends State<SubclassCardsListScreen> {
       );
     }
 
-    final allCards = appData.subclasses.where((card) => card.name.isNotEmpty).toList();
+    final allCards = appData.domainCards.where((card) => card.name.isNotEmpty).toList();
 
     // Initialize filtered cards on first build or when search is cleared
     if (_filteredCards.isEmpty && _searchQuery.isEmpty) {
@@ -104,8 +105,8 @@ class _SubclassCardsListScreenState extends State<SubclassCardsListScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MarkdownWidget(
-                                  data: card.description,
-                                  config: buildMarkdownConfigFromTheme(theme), // from your custom config file
+                                  data: card.feature,
+                                  config: darkFantasyMarkdownConfig, // from your custom config file
                                   shrinkWrap: true,
                                   physics: NeverScrollableScrollPhysics(),
                                   //config: MarkdownConfig.darkConfig,

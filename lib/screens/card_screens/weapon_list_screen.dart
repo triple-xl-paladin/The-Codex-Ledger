@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../providers/app_data_provider.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import '../../theme/markdown_theme.dart';
-//import '../../utils/debug_utils.dart'; // adjust path as needed
+import '../../utils/debug_utils.dart'; // adjust path as needed
 
 class WeaponListScreen extends StatefulWidget {
 
@@ -49,8 +49,6 @@ class _WeaponListScreenState extends State<WeaponListScreen> {
   }
 
   Widget _buildWeaponTile(WeaponModel weaponItem) {
-    final theme = Theme.of(context);
-
     return ListTile(
       leading: (weaponItem.image != null)
           ? SizedBox(
@@ -70,7 +68,7 @@ class _WeaponListScreenState extends State<WeaponListScreen> {
         children: [
           MarkdownWidget(
             data: weaponItem.feature,
-            config: buildMarkdownConfigFromTheme(theme),
+            config: darkFantasyMarkdownConfig,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

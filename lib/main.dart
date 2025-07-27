@@ -1,91 +1,30 @@
-import 'dart:io';
-import 'package:daggerheart/utils/console_attach.dart';
-import 'package:daggerheart/providers/theme_provider.dart';
-import 'package:daggerheart/services/theme_loader_service.dart';
-import 'package:daggerheart/theme/app_themes.dart';
-import 'package:daggerheart/utils/debug_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
 import 'package:provider/provider.dart';
 import 'screens/home_screen.dart';
 import 'package:daggerheart/providers/app_data_provider.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+//import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, TargetPlatform, kIsWeb;
 import 'package:daggerheart/utils/scroll_behaviour.dart';
-import 'package:logging/logging.dart';
-import 'package:daggerheart/services/logging_service.dart';
 
-void main(List<String> args) async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Check for --debug flag. Works in windoze only
-  if (Platform.isWindows && args.contains('--debug')) {
-    attachConsole();
-  }
-
-  try {
-    LoggingService().setup(level: Level.ALL);
-    final logger = LoggingService().getLogger('Main');
-    logger.info('App starting');
-  } catch (e,stack) {
-    print('Logging service failed to start: $e/$stack');
-  }
 
   // For desktop platforms, use sqflite_common_ffi
   if (!kIsWeb &&
       (defaultTargetPlatform == TargetPlatform.windows ||
           defaultTargetPlatform == TargetPlatform.linux ||
           defaultTargetPlatform == TargetPlatform.macOS)) {
-    try {
-      sqfliteFfiInit(); // Initializes FFI
-      databaseFactory = databaseFactoryFfi; // Sets the global database factory
-    } catch (e, stack) {
-      LoggingService().severe('SQLite FFI failure: $e/$stack');
-      print('SQLite FFI failure: $e/$stack');
-    }
+    sqfliteFfiInit(); // Initializes FFI
+    databaseFactory = databaseFactoryFfi; // Sets the global database factory
   }
-
-  // Initialize Hive for desktop
-  await Hive.initFlutter();
-
-  // Open settings box
-  final settingsBox = await Hive.openBox('settings');
-
-  // Reset the theme on every startup when in debug mode
-  await resetThemeOnStartup(settingsBox);
-
-  // Load saved theme key (or use fallback)
-  final allThemes = await ThemeLoader.loadThemesFromManifest();
-  AppThemes.allThemes = allThemes;
-
-  String? themeKey = settingsBox.get('selectedThemeKey');
-  debugLog('Main/themeKey: $themeKey');
-  
-  // Retrieve saved theme key
-  // final themeKey = settingsBox.get('selectedThemeKey', defaultValue: 'Light');
-
-  // Get theme or fallback
-  // final selectedTheme = allThemes[themeKey] ?? ThemeData.light();
-  ThemeData selectedTheme;
-  if(themeKey == null) {
-    selectedTheme = ThemeData();
-  } else {
-    selectedTheme = await ThemeLoader.loadThemeByName(themeKey);
-  }
-
-  //final themeKey = settingsBox.get('selectedThemeKey', defaultValue: 'Dark Fantasy');
-  //final selectedTheme = await ThemeRegistry.loadThemeByName(themeKey);
-  //final selectedTheme = AppThemes.allThemes[themeKey] ?? AppThemes.darkFantasy;
 
   final appDataProvider = AppDataProvider(); //force creation & init
-  final themeProvider = ThemeProvider(selectedTheme);
-
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(value: appDataProvider),
-        ChangeNotifierProvider.value(value: themeProvider),
-      ],
+    ChangeNotifierProvider.value(
+      //create: (_) => AppDataProvider(),//..loadAllData(), // initialize your provider if needed
+      value: appDataProvider,
       child: const MyApp(),
     )
   );
@@ -97,11 +36,49 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
-
     return MaterialApp(
       title: 'Daggerheart',
-      theme: themeProvider.themeData,
+      //theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // TRY THIS: Try running your application with "flutter run". You'll see
+        // the application has a purple toolbar. Then, without quitting the app,
+        // try changing the seedColor in the colorScheme below to Colors.green
+        // and then invoke "hot reload" (save your changes or press the "hot
+        // reload" button in a Flutter-supported IDE, or press "r" if you used
+        // the command line to start the app).
+        //
+        // Notice that the counter didn't reset back to zero; the application
+        // state is not lost during the reload. To reset the state, use hot
+        // restart instead.
+        //
+        // This works for code too, not just values: Most code changes can be
+        // tested with just a hot reload.
+        //colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+      //theme: ThemeData(primarySwatch: Colors.indigo),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        primaryColor: Color(0xFF3E2723), // Dark brown
+        scaffoldBackgroundColor: Color(0xFF121212), // Very dark background
+        cardColor: Color(0xFF1E1E1E),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xFF212121),
+          foregroundColor: Colors.white,
+          elevation: 4,
+        ),
+        drawerTheme: DrawerThemeData(
+          backgroundColor: Color(0xFF1A1A1A),
+        ),
+        textTheme: TextTheme(
+          bodyMedium: TextStyle(color: Colors.grey[300]),
+          titleLarge: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: IconThemeData(color: Colors.tealAccent),
+        colorScheme: ColorScheme.dark(
+          primary: Color(0xFF6A1B9A), // Purple accent
+          secondary: Color(0xFF00897B), // Teal accent
+        ),
+      ),
       home: HomeScreen(),
       scrollBehavior: const AlwaysVisibleScrollBehavior(),
     );

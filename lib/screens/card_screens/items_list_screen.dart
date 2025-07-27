@@ -32,8 +32,6 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
   }
 
   Widget _buildCardTile(ItemsModel item) {
-    final theme = Theme.of(context);
-    
     return ListTile(
       leading: (item.itemImage != null)
           ? SizedBox(
@@ -53,7 +51,7 @@ class _ItemsListScreenState extends State<ItemsListScreen> {
         children: [
           MarkdownWidget(
             data: item.itemFeature ?? 'No description of item',
-            config: buildMarkdownConfigFromTheme(theme),
+            config: darkFantasyMarkdownConfig,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),

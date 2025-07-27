@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../models/domain_card.dart';
 import '../../models/character_heritage.dart';
 import '../../providers/app_data_provider.dart';
+import '../../services/card_service.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 import '../../theme/markdown_theme.dart'; // adjust path as needed
 
@@ -32,8 +34,6 @@ class _CommunitiesCardsListScreenState extends State<CommunitiesCardsListScreen>
   }
 
   Widget _buildCardTile(CharacterHeritage card) {
-    final theme = Theme.of(context);
-
     return ListTile(
       leading: (card.image != null)
           ? SizedBox(
@@ -53,7 +53,7 @@ class _CommunitiesCardsListScreenState extends State<CommunitiesCardsListScreen>
         children: [
           MarkdownWidget(
             data: card.description,
-            config: buildMarkdownConfigFromTheme(theme),
+            config: darkFantasyMarkdownConfig,
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
           ),
